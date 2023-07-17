@@ -28,10 +28,6 @@ class Game {
                 document.querySelector(`.${item} button`).disabled = true;
             }
         });
-    }    
-
-    refreshScore() {
-        document.getElementById("score").innerHTML = this.score;
     }
 
     incrementScore(byValue = 1) {
@@ -49,13 +45,6 @@ class Game {
             this.score = 0;
         }
         this.refreshScore();
-    }
-
-    removePokemon(pokemonToRemove) {
-        const index = this.pokemonList.indexOf(pokemonToRemove);
-        if (index > -1) {
-            this.pokemonList.splice(index, 1);
-        }
     }
 
     buy(item) {
@@ -79,6 +68,25 @@ class Game {
         this.executeBuyAction(item);
     }
 
+    refreshScore() {
+        document.getElementById("score").innerHTML = this.score;
+    }
+
+    alertPurchaseLimit(item) {
+        if (this[item + 'Purchases'] >= 4) {
+            alert(`Vous avez atteint la limite d'achat pour cet(te) ${item}.`);
+        } else {
+            alert(`Vous n'avez pas assez de points pour acheter cet(te) ${item}.`);
+        }
+    }
+
+    refreshButtonStatus(item) {
+        if (this[item + 'Purchases'] === 4) {
+            document.querySelector(`.${item} button`).disabled = true;
+            document.querySelector(`.${item} button`).style.backgroundColor = 'grey';
+        }
+    }
+
     executeBuyAction(item) {
         if (item === 'autoclick') {
             this.autoclickIntervalTime -= 2000;
@@ -92,19 +100,19 @@ class Game {
         }
     }
 
-    refreshButtonStatus(item) {
-        if (this[item + 'Purchases'] === 4) {
-            document.querySelector(`.${item} button`).disabled = true;
-            document.querySelector(`.${item} button`).style.backgroundColor = 'grey';
-        }
+    updatePrice(item) {
+        this[item + "Price"] *= 2;
+        const priceElements = document.querySelectorAll(`.${item}-price`);
+        priceElements.forEach(element => {
+            element.textContent = this[item + "Price"];
+        });
     }
 
-    alertPurchaseLimit(item) {
-        if (this[item + 'Purchases'] >= 4) {
-            alert(`Vous avez atteint la limite d'achat pour cet(te) ${item}.`);
-        } else {
-            alert(`Vous n'avez pas assez de points pour acheter cet(te) ${item}.`);
+    buyMultiplier() {
+        if (this.multiplierPurchases > 0) {
+            this.multiplier *= 2;
         }
+        this.updatePrice('multiplier');
     }
 
     buyAutoclick() {
@@ -119,12 +127,12 @@ class Game {
         this.autoclickInterval = setInterval(() => {
             const validPokemons = this.pokemonList.filter(pokemon => !pokemon.malus);
             if (validPokemons.length > 0) {
-                this.performAutoClick(validPokemons);
+                this.executeAutoClick(validPokemons);
             }
         }, this.autoclickIntervalTime);
     }
 
-    performAutoClick(validPokemons) {
+    executeAutoClick(validPokemons) {
         const randomIndex = Math.floor(Math.random() * validPokemons.length);
         const pokemon = validPokemons[randomIndex];
         this.incrementScore(1);
@@ -135,13 +143,6 @@ class Game {
         if (pokemonDiv) {
             this.removePokemonDiv(pokemonDiv);
         }
-    }
-
-    buyMultiplier() {
-        if (this.multiplierPurchases > 0) {
-            this.multiplier *= 2;
-        }
-        this.updatePrice('multiplier');
     }
 
     buyBonus() {
@@ -182,14 +183,6 @@ class Game {
         document.querySelector(".bonus").disabled = false;
         const bonusButton = document.querySelector(".bonus button");
         bonusButton.innerHTML = "<div class='pokemon-ball'></div> <a> Bonus <span class='bonus-price' data-letters='500'></span><span class='bonus-price' data-letters='500'></span></a>";
-    }
-
-    updatePrice(item) {
-        this[item + "Price"] *= 2;
-        const priceElements = document.querySelectorAll(`.${item}-price`);
-        priceElements.forEach(element => {
-            element.textContent = this[item + "Price"];
-        });
     }
 }
 
@@ -267,6 +260,13 @@ class WebGame extends Game {
         this.displayPokemon(pokemon);
     }
 
+    removePokemon(pokemonToRemove) {
+        const index = this.pokemonList.indexOf(pokemonToRemove);
+        if (index > -1) {
+            this.pokemonList.splice(index, 1);
+        }
+    }
+
     createPokemonDiv(pokemon) {
         let pokemonDiv = document.createElement('div');
         pokemonDiv.id = `pokemon${pokemon.id}`;
@@ -301,6 +301,21 @@ class WebGame extends Game {
         });
     }
 
+    movePokemon() {
+        const animate = () => {
+            for (let pokemon of this.pokemonList) {
+                pokemon.update();
+                const pokemonDiv = document.getElementById(`pokemon${pokemon.id}`);
+                if (pokemonDiv) {
+                    pokemonDiv.style.left = `${pokemon.x}px`;
+                    pokemonDiv.style.top = `${pokemon.y}px`;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
     addToInventory(pokemon) {
         const img = document.createElement('img');
         img.src = pokemon.image;
@@ -319,21 +334,6 @@ class WebGame extends Game {
                 break;
             }
         }
-    }
-
-    movePokemon() {
-        const animate = () => {
-            for (let pokemon of this.pokemonList) {
-                pokemon.update();
-                const pokemonDiv = document.getElementById(`pokemon${pokemon.id}`);
-                if (pokemonDiv) {
-                    pokemonDiv.style.left = `${pokemon.x}px`;
-                    pokemonDiv.style.top = `${pokemon.y}px`;
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
     }
 
     async playGame() {
