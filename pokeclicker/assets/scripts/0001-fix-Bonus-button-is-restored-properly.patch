@@ -1,0 +1,25 @@
+From 00af61c0cb553f1870c89ee0e138f7b593560877 Mon Sep 17 00:00:00 2001
+From: docusland <erwann.duclos@gmail.com>
+Date: Mon, 17 Jul 2023 10:14:30 +0200
+Subject: [PATCH] (fix) Bonus button is restored properly
+
+---
+ assets/scripts/script.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/assets/scripts/script.js b/assets/scripts/script.js
+index aef9bfd..73cc6fd 100644
+--- a/assets/scripts/script.js
++++ b/assets/scripts/script.js
+@@ -172,7 +172,7 @@ class Game {
+         this.bonusActive = false;
+         document.querySelector(".bonus").disabled = false;
+         const bonusButton = document.querySelector(".bonus button");
+-        bonusButton.innerHTML = "Bonus <span class='bonus-price' data-letters='500'></span><span class='bonus-price' data-letters='500'></span>";
++        bonusButton.innerHTML = "<div class='pokemon-ball'></div> <a> Bonus <span class='bonus-price' data-letters='500'></span><span class='bonus-price' data-letters='500'></span></a>";
+     }
+ 
+     updatePrice(item) {
+-- 
+2.30.2
+

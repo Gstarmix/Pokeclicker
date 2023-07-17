@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokéclicker</title>
+    <link rel="stylesheet" href="assets/styles/cdnjs.cloudflare.com_ajax_libs_normalize_5.0.0_normalize.min.css">
+    <link rel="stylesheet" href="assets/styles/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="grid-container">
+            <div class="game-container">
+                <div class="window" id="game">
+                    <div class="title">
+                        <div>Score : <span id="score">0</span></div>
+                    </div>
+                    <div class="frame">
+                        <div class="data">
+                            <div class="content">
+                                <div class="btn-bg pokeball">
+                                    <img id="generate" class="image-button" src="assets/images/pokeball.png" alt="Générer">
+                                </div>
+                                <div id="result"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-bg multiplier">
+                        <div class="btn-group">
+                            <div class="btn ball">
+                                <button class="multiplier button">
+                                    <div class="pokemon-ball"></div>
+                                    <a>Multiplier
+                                        <span class='multiplier-price' data-letters="5"></span>
+                                        <span class='multiplier-price' data-letters="5"></span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-bg autoclick">
+                        <div class="btn-group">
+                            <div class="btn ball">
+                                <button class="autoclick button">
+                                    <div class="pokemon-ball"></div>
+                                    <a>Autoclick
+                                        <span class='autoclick-price' data-letters="10"></span>
+                                        <span class='autoclick-price' data-letters="10"></span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-bg bonus">
+                        <div class="btn-group">
+                            <div class="btn ball">
+                                <button class="bonus button">
+                                    <div class="pokemon-ball"></div>
+                                    <a>Bonus
+                                        <span class='bonus-price' data-letters="20"></span>
+                                        <span class='bonus-price' data-letters="20"></span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-bg reset">
+                        <div class="btn-group">
+                            <div class="btn ball">
+                                <button id="reset" class="button">
+                                    <div class="pokemon-ball"></div>
+                                    <a>Réinitialiser<span data-letters="GO!"></span><span
+                                            data-letters="GO!"></span></a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="inventory-container" id="inventory-container">
+                <div class="window" id="inventory">
+                    <div class="title">
+                        <div>Pokémon attrapé</div>
+                    </div>
+                    <div class="frame">
+                        <div class="data">
+                            <div class="box" id="inventory-box"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="custom-cursor"></div>
+
+    <script src="assets/scripts/cdnjs.cloudflare.com_ajax_libs_prefixfree_1.0.7_prefixfree.min.js"></script>
+    <script src="assets/scripts/script.js"></script>
+</body>
+
+</html>
